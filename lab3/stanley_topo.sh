@@ -16,6 +16,7 @@ ip link add vethbr-alice master br0 type veth peer name vethalice-br netns alice
 ip link add vethbr-bob master br0 type veth peer name vethbob-br netns bob
 ip link add vethbr-eve master br0 type veth peer name vetheve-br netns eve
 
+ip link set br0 up
 ip link set vethbr-alice up
 ip link set vethbr-bob up
 ip link set vethbr-eve up
@@ -27,3 +28,5 @@ ip netns exec alice ip link set vethalice-br up
 ip netns exec bob ip link set vethbob-br up
 ip netns exec eve ip link set vetheve-br up
 
+docker exec alice /usr/sbin/dhcpd
+ip netns exec bob dhcp-client vethbob-br
