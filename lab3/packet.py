@@ -1,6 +1,7 @@
 from scapy.all import sniff, BOOTP, DHCP
 
 def dhcp_monitor(pkt):
+    print(f"Packet captured: {pkt.summary()}")
     if DHCP in pkt and BOOTP in pkt:
         dhcp_message_type = pkt[DHCP].options[0][1]
         msg_types = {
