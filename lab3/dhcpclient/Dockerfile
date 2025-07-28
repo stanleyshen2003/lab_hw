@@ -9,3 +9,5 @@ RUN apt update && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
+
+CMD [ "sleep", "infinity" ]

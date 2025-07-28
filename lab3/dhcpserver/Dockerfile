@@ -21,4 +21,4 @@ COPY dhcpd.conf /etc/dhcp/dhcpd.conf
 EXPOSE 67/udp
 
 # Default command to run the DHCP server in the foreground with logs to stdout
-CMD ["dhcpd", "-f", "-d"]
+CMD ["sleep", "infinity"]
