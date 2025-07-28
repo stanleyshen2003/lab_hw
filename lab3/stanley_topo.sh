@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if [ "$(id -u)" -ne 0 ]; then
+  echo "This script must be run as root." >&2
+  exit 1
+fi
+
 docker run -d --name alice --network none dhcpserver
 docker run -d --name bob --network none dhcpclient
 docker run -d --name eve --network none dhcpclient
@@ -29,4 +35,4 @@ ip netns exec bob ip link set vethbob-br up
 ip netns exec eve ip link set vetheve-br up
 
 docker exec alice /usr/sbin/dhcpd
-ip netns exec bob dhcclient vethbob-br
+ip netns exec bob dhclient vethbob-br
