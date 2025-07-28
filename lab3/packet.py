@@ -14,4 +14,4 @@ def dhcp_monitor(pkt):
         print(pkt.summary())
 
 # Sniff DHCP packets on your interface (e.g., "eth0")
-sniff(filter="udp and (port 67 or port 68)", prn=dhcp_monitor, store=0)
+sniff(filter="udp and (port 67 or port 68)", prn=dhcp_monitor, store=0, iface="br0")
