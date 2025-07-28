@@ -20,11 +20,12 @@ def dhcp_handler(pkt):
             return  # Do nothing, effectively ignoring other offers
         if dhcp_type == 1:  # DHCP Discover
             print(f"[+] DHCP Discover from {client_mac}, sending Offer for {target_ip}")
-            offered_clients.add(client_mac)
 
             ether = Ether(dst=client_mac, src=your_mac)
             ip = IP(src=your_ip, dst="255.255.255.255")
             udp = UDP(sport=67, dport=68)
+            chaddr = pkt[BOOTP].chaddr
+            xid = pkt[BOOTP].xid
             bootp = BOOTP(
                 op=2,
                 yiaddr=target_ip,
