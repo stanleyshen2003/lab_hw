@@ -1,0 +1,29 @@
+#!/bin/bash
+docker run -d --name alice --network none dhcpserver
+docker run -d --name bob --network none dhcpclient
+docker run -d --name eve --network none dhcpclient
+
+ln -s /proc/`docker inspect -f  '{{ .State.Pid }}' alice`/ns/net \
+  /var/run/netns/alice
+ln -s /proc/`docker inspect -f  '{{ .State.Pid }}' bob`/ns/net \
+  /var/run/netns/bob
+ln -s /proc/`docker inspect -f  '{{ .State.Pid }}' eve`/ns/net \
+  /var/run/netns/eve
+
+ip link add br0 type bridge
+
+ip link add vethbr-alice master br0 type veth peer name vethalice-br netns alice
+ip link add vethbr-bob master br0 type veth peer name vethbob-br netns bob
+ip link add vethbr-eve master br0 type veth peer name vetheve-br netns eve
+
+ip link set vethbr-alice up
+ip link set vethbr-bob up
+ip link set vethbr-eve up
+
+ip netns exec alice ip addr add 192.168.1.254/24 dev vethalice-br
+ip netns exec eve ip addr add 192.168.1.250/24 dev vetheve-br
+
+ip netns exec alice ip link set vethalice-br up
+ip netns exec bob ip link set vethbob-br up
+ip netns exec eve ip link set vetheve-br up
+
