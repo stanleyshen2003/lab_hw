@@ -35,4 +35,4 @@ ip netns exec bob ip link set vethbob-br up
 ip netns exec eve ip link set vetheve-br up
 
 docker exec alice /usr/sbin/dhcpd
-ip netns exec bob dhclient vethbob-br
+# ip netns exec bob dhclient vethbob-br
